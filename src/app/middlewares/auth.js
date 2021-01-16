@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const configAuth = require('../config/auth.json')
+const configAuth = require('../../config/auth.json')
 
 
 module.exports = (req, res, next) => {
@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
             return res.status(401).send({ message: 'token invalid'})
 
         req.userId = decoded.id;
-        console.log(req.userId +" | "+req.body);
+        req.userName = decoded.name;
         return next();
 
 

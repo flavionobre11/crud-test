@@ -2,7 +2,7 @@ const express = require('express');
 const Employer = require('../models/schemaEmployer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const configAuth = require('../config/auth.json')
+const configAuth = require('../../config/auth.json')
 
 const router = express.Router();
 
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
         employer.password = undefined;
 
         // token para auth
-        const token = tokenGenerate({ id: employer.id});
+        const token = tokenGenerate({id: employer.id});
 
         // retorna response
         return res.send({ employer, token })
@@ -55,7 +55,19 @@ router.post('/register', async (req, res) => {
 
 // autenticacao de usuario
 router.post('/login', async (req, res) => {
-    const { email, password} = req.body;
+    const { email, password } = req.body;
+
+    if(!email)
+        return res.status(400).send({
+            message: 'email empty.'
+        });
+
+    if(!password)
+        return res.status(400).send({
+            message: 'password empty.'
+        });
+
+
     const employer = await Employer.findOne({ email }).select('+password')
 
     if (!employer)
@@ -68,7 +80,10 @@ router.post('/login', async (req, res) => {
             message: 'Invalid password'
         })
 
-    const token = tokenGenerate({ id: employer.id});
+    const token = tokenGenerate({
+        id: employer.id,
+        name: employer.name
+    });
 
     employer.password = undefined;
     res.send({ employer, token })
