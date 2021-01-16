@@ -15,5 +15,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Flavio",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flavionobre11/crud-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flavionobre11/crud-test/issues"
+  },
+  "homepage": "https://github.com/flavionobre11/crud-test#readme"
 }
