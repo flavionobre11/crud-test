@@ -18,6 +18,14 @@ const EmployerSchema = new mongoose.Schema({
         required: true,
         select: false
     },
+    resetPasswordToken:{
+        type: String,
+        select: false
+    },
+    resetPasswordTime:{
+        type: Date,
+        select: false
+    },
     createdAt:{
         type: Date,
         default: Date.now

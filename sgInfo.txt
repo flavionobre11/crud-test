@@ -1,0 +1,17 @@
+sendgrid
+
+flavionobre11@gmail.com
+projetotallosflavio
+
+
+api key
+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
+
+colocar api key numa variavel de ambiente e utilizar process.env.variavel
+ou colocar api key no arquivo de configuração
+
+inclusao: 
+olhar o site de como envia email. a unica coisa que faremos é
+trocar o e-mail pelo e-mail do usuário!
+
+parei no 17:05 do video.

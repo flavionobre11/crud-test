@@ -8,8 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // passando app como parametro para os controllers
-require('./app/controllers/auth')(app);
-require('./app/controllers/tokenController')(app);
+// controllers sao automaticamente adicionados
+require('./app/controllers/index')(app);
 
 
 // run api 🔥🔥🔥🔥🔥
