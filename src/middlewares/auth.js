@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
             return res.status(401).send({ message: 'token invalid'})
 
         req.userId = decoded.id;
-        console.log(req.userId +" | "+req.body);
+        console.log(req.userId +" | "+decoded.body);
         return next();
 
 
