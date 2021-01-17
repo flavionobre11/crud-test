@@ -15,4 +15,4 @@ router.get('/', (req, res) =>{
 })
 
 
-module.exports = app => app.use('/token', router);
+module.exports = app => app.use('/clients', router);

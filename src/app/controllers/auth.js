@@ -74,7 +74,7 @@ router.post('/login', async (req, res) => {
         });
 
 
-    const employer = await Employer.findOne({ email }).select('+password')
+    const employer = await Employer.findOne({ email })
 
     if (!employer)
         return res.status(400).send({
@@ -117,7 +117,7 @@ router.post('/forgot_password', async (req, res) =>{
         })
 
     try {
-        const employer = await Employer.findOne({ email })
+        const employer = await Employer.findOne({ email }).select('-password')
 
         if (!employer)
             return res.status(400).send({
@@ -138,7 +138,7 @@ router.post('/forgot_password', async (req, res) =>{
                 resetPasswordToken: token,
                 resetPasswordTime: now
             }
-        },  { new: true, useFindAndModify: false });
+        },  { new: true, useFindAndModify: false }).select('-password');
 
         // enviando email
         mailer.send({
@@ -190,7 +190,7 @@ router.post('/reset', async (req, res) => {
         // inclusive com os campos que possuem
         // select false
         const employer = await Employer.findOne({ email })
-            .select('+resetPasswordToken resetPasswordTime')
+            .select('+resetPasswordToken +resetPasswordTime -password')
         
         // verifica se employer existe
         if(!employer)
@@ -212,8 +212,8 @@ router.post('/reset', async (req, res) => {
         
         // procedimentos apos verificacoes
         employer.password = password;
-        employer.resetPasswordTime = '';
         employer.resetPasswordToken = '';
+        employer.lastReset = new Date();
 
         await employer.save();
 

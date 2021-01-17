@@ -16,7 +16,7 @@ const EmployerSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true,
-        select: false
+        select: true
     },
     resetPasswordToken:{
         type: String,
@@ -26,6 +26,9 @@ const EmployerSchema = new mongoose.Schema({
         type: Date,
         select: false
     },
+    lastReset:{
+        type: Date
+    },
     createdAt:{
         type: Date,
         default: Date.now
@@ -33,6 +36,7 @@ const EmployerSchema = new mongoose.Schema({
 })
 
 EmployerSchema.pre('save', async function(next) {
+    console.log(this)
     const hash = await bcrypt.hash(this.password, 10);
     this.password = hash;
     next();
