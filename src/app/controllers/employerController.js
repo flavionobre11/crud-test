@@ -74,7 +74,7 @@ router.put('/:employerId', async (req, res) => {
 
 router.delete('/:employerId', async (req, res) => {
     try {
-        await Employer.findByIdAndRemove(req.params.employerId)
+        await Employer.findByIdAndRemove(req.params.employerId).select('-password')
 
         return res.send({
             message: 'user removed.'

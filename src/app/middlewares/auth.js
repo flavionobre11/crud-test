@@ -21,7 +21,8 @@ module.exports = (req, res, next) => {
     jwt.verify(token, configAuth.secret, (err, decoded) => {
         if (err) 
             return res.status(401).send({ message: 'token invalid'})
-
+        
+            // estou passando o nome so para testes
         req.userId = decoded.id;
         req.userName = decoded.name;
         return next();
