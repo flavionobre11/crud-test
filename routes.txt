@@ -1,0 +1,17 @@
+Rotas da API:
+
+employer:
+get /employer/
+get /employer/:id
+post /employer/
+put /employer/:id
+delete /employer/:id
+
+clients:
+get /clients/
+get /clients/:id
+post /clients/
+put /clients/:id
+delete /clients/:id
+
+
