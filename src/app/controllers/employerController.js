@@ -65,9 +65,9 @@ router.put('/:employerId', async (req, res) => {
         })
 
     } catch (err) {
-        // return res.status(400).send({
-        //     message: 'update employer error'
-        // })
+        return res.status(400).send({
+            message: 'update employer error'
+        })
     }
 })
 
