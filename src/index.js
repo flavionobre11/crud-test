@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const cors = require('cors');
+const cors = require('cors')
+const http = require('http')
+const socketIO = require('socket.io')
 
 const app = express()
 
@@ -16,8 +18,30 @@ app.use(cors())
 require('./app/controllers/index')(app);
 
 
-// run api 🔥🔥🔥🔥🔥
 
-app.listen(3001, () =>{
+// para socket
+const server = http.Server(app)
+const io = socketIO(server)
+const clients = {}
+
+
+// run api 🔥🔥🔥🔥🔥
+server.listen(3001, () =>{
     console.log("🔥 Server listen on port 3001 🔥")
+});
+
+// socket - nao funcional
+io.on('connection', (socket) => {
+    let id = socket.id;
+    console.log('Novo usuário conectado. ID: ' + id);
+    clients[id] = socket;
+
+    socket.on('disconnect', () => {
+        console.log('Usuário desconectado. ID: ' + id)
+        delete clients[id];
+    })
 })
+
+// app.listen(3001, () =>{
+    
+// })

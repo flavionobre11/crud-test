@@ -74,7 +74,7 @@ router.post('/login', async (req, res) => {
         });
 
 
-    const employer = await Employer.findOne({ email })
+    const employer = await Employer.findOne({ email }).select('-createdAt -email')
 
     if (!employer)
         return res.status(400).send({
