@@ -8,7 +8,7 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) =>{
     try {
-        const client = await Client.find();
+        const client = await Client.find().populate('createdBy');
         res.send({ client })
         
     } catch (err) {
@@ -79,8 +79,7 @@ router.post('/', async (req, res) => {
         // id e nome de quem criou
 
         const client = await Client.create(req.body);
-        client.createdBy.id = req.userId;
-        client.createdBy.name = req.userName;
+        client.createdBy = req.userId;
         client.save();
 
             // logs de registro

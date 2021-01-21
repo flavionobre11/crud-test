@@ -30,12 +30,9 @@ const ClientSchema = new mongoose.Schema({
         default: Date.now
     },
     createdBy:{
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Employer',
-            require: true
-        },
-        name: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employer',
+        require: true
     }
 })
 
