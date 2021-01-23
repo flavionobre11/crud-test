@@ -84,11 +84,11 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     // valida email recebido
-    if(!(emailValidator(email))){
+    if(!(emailValidator(email)))
         return res.status(400).send({
             message: 'invalid email.'
         })
-    }
+    
     
     // verifica se a senha esta vazio
     if(!password)
@@ -101,47 +101,53 @@ router.post('/login', async (req, res) => {
             message: 'the password is more than 6 characters'
         });
 
-
-    const employer = await Employer.findOne({ email }).select('-createdAt -email')
-
-    if (!employer)
+    try {
+        
+        const employer = await Employer.findOne({ email }).select('-createdAt -email')
+        
+        if (!employer)
         return res.status(400).send({
             message: 'User not found.'
         });
-    
-    if (!await bcrypt.compare(password, employer.password))
-        return res.status(400).send({
-            message: 'Invalid password'
-        })
+        
+        if (!await bcrypt.compare(password, employer.password))
+            return res.status(400).send({
+                message: 'Invalid password'
+            })
 
-    // gera um token com id e name como keys
-    const token = tokenGenerate({
-        id: employer.id,
-        name: employer.name
-    });
+            // gera um token com id e name como keys
+            const token = tokenGenerate({
+                id: employer.id,
+                name: employer.name
+            });
+            
 
+            // não mostrar a senha na response
+        employer.password = undefined;
+        
 
-    // não mostrar a senha na response
-    employer.password = undefined;
-
-
-    // logs de registro
-    var date = new Date();
-    console.log(date.getHours()+
+        // logs de registro
+        var date = new Date();
+        console.log(date.getHours()+
         ':'+date.getMinutes()+
-        ':'+date.getSeconds()+
-        ' | Login de '+ employer.name+' realizado 🤸');
-
-
-    res.send({ employer, token })
-})
-
-router.post('/forgot_password', async (req, res) =>{
-    const { email } = req.body;
-
-    if(!(emailValidator(email))){
-        return res.status(400).send({
-            message: 'invalid email.'
+            ':'+date.getSeconds()+
+            ' | '+ employer.name+' login success 🤩');
+            
+        
+        res.send({ employer, token })
+    } catch (err) {
+        return res.status(401).send({
+            message: 'login error. try again later.'
+        })
+    }
+    })
+    
+    router.post('/forgot_password', async (req, res) =>{
+        const { email } = req.body;
+        
+        if(!(emailValidator(email))){
+            return res.status(400).send({
+                message: 'invalid email.'
         })
     }
 
