@@ -6,6 +6,12 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
+function emailValidator(email){
+    if(!email) return false
+    if(/\S+@\S+\.\S+/.test(email)) return true
+    return false
+}
+
 // listar employers
 router.get('/', async (req, res) =>{
     try {
@@ -41,8 +47,23 @@ router.get('/:employerId', async (req, res) => {
 router.put('/:employerId', async (req, res) => {
     const { email, name, password} = req.body;
     const query = {}
-    if(email) query.email = email;
-    if(password) query.password = password
+    if(email){
+        if(!(emailValidator(email))){
+            return res.status(400).send({
+                message: 'invalid email.'
+            })
+        }
+        query.email = email;
+    }
+
+    if(password){
+        if (password.length < 7)
+            return res.status(400).send({
+                message: 'the password is more than 6 characters'
+            });
+        query.password = password
+    }
+    
     if(name) query.name = name;
     
 

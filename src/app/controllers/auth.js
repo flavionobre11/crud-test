@@ -16,10 +16,32 @@ function tokenGenerate(params = {}){
     })
 }
 
+function emailValidator(email){
+    if(!email) return false
+    if(/\S+@\S+\.\S+/.test(email)) return true
+    return false
+}
+
 
 // registro de usuario funcionario
 router.post('/register', async (req, res) => {
-    const { email } = req.body
+    const { email, password } = req.body
+    
+    if(!(emailValidator(email))){
+        return res.status(400).send({
+            message: 'invalid email.'
+        })
+    }
+
+    if(!password)
+        return res.status(400).send({
+            message: 'password empty'
+        });
+
+    if (password.length < 7)
+        return res.status(400).send({
+            message: 'the password is more than 6 characters'
+        });
     
     try {
 
@@ -61,16 +83,22 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // verifica se o email esta vazio
-    if(!email)
+    // valida email recebido
+    if(!(emailValidator(email))){
         return res.status(400).send({
-            message: 'email empty.'
-        });
+            message: 'invalid email.'
+        })
+    }
     
     // verifica se a senha esta vazio
     if(!password)
         return res.status(400).send({
             message: 'password empty.'
+        });
+    
+    if (password.length < 7)
+        return res.status(400).send({
+            message: 'the password is more than 6 characters'
         });
 
 
@@ -111,10 +139,11 @@ router.post('/login', async (req, res) => {
 router.post('/forgot_password', async (req, res) =>{
     const { email } = req.body;
 
-    if (!email)
+    if(!(emailValidator(email))){
         return res.status(400).send({
-            message: 'email cannot be empty'
+            message: 'invalid email.'
         })
+    }
 
     try {
         const employer = await Employer.findOne({ email }).select('-password')
@@ -167,25 +196,32 @@ router.post('/forgot_password', async (req, res) =>{
 router.post('/reset', async (req, res) => {
     const { token, email, password } = req.body;
 
+
+    //verifica se o email esta vazio
+    if(!email)
+        return res.status(400).send({
+            message: 'email empty.'
+        });
+    
+    // verifica se a senha esta vazio
+    if(!password)
+        return res.status(400).send({
+            message: 'password empty.'
+        });
+    
+    // permite apenas senha maior que 6 digitos
+    if (password.length < 7)
+        return res.status(400).send({
+            message: 'the password is more than 6 characters'
+        });
+    
+    // verifica se o token esta vazio
+    if(!token)
+        return res.status(400).send({
+            message: 'token is required. Please type.'
+        });
+    
     try {
-        //verifica se o email esta vazio
-        if(!email)
-            return res.status(400).send({
-                message: 'email empty.'
-            });
-        
-        // verifica se a senha esta vazio
-        if(!password)
-            return res.status(400).send({
-                message: 'password empty.'
-            });
-        
-        // verifica se o token esta vazio
-        if(!token)
-            return res.status(400).send({
-                message: 'token is required. Please type.'
-            });
-        
         // buscando employer no db,
         // inclusive com os campos que possuem
         // select false
