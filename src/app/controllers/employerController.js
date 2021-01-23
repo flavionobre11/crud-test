@@ -15,7 +15,6 @@ function emailValidator(email){
 // load session
 router.get('/load_session', async (req, res) =>{
     const token = req.headers.authorization.split(' ')[1];
-    console.log(req.userId)
     
     try {
         const employer = await Employer.findById(req.userId).select(
