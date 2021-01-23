@@ -12,6 +12,35 @@ function emailValidator(email){
     return false
 }
 
+// load session
+router.get('/load_session', async (req, res) =>{
+    const token = req.headers.authorization.split(' ')[1];
+    console.log(req.userId)
+    
+    try {
+        const employer = await Employer.findById(req.userId).select(
+            '-password -lastReset -resetPasswordToken -resetPasswordTime');
+        
+        if(!employer)
+            return res.status(400).send({
+                message: 'employer not found'
+            })
+        
+        res.send({
+            token,
+            employer
+        })
+        
+    } catch (err) {
+        return res.status(400).send({
+            message: 'erro on load session. check token.'
+        })
+    }
+
+
+
+})
+
 // listar employers
 router.get('/', async (req, res) =>{
     try {

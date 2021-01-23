@@ -115,11 +115,11 @@ router.post('/login', async (req, res) => {
                 message: 'Invalid password'
             })
 
-            // gera um token com id e name como keys
-            const token = tokenGenerate({
-                id: employer.id,
-                name: employer.name
-            });
+        // gera um token com id e name como keys
+        const token = tokenGenerate({
+            id: employer.id,
+            name: employer.name
+        });
             
 
             // não mostrar a senha na response
@@ -179,7 +179,7 @@ router.post('/login', async (req, res) => {
         mailer.send({
             to: email,
             from: 'flavio.nobre@tallos.com.br',
-            subject: '[TALLOS-PROJECT] E-mail de recuperação de senha',
+            subject: '[CONTACTS APP] E-mail de recuperação de senha',
             text: 'Olá! Utilize esse token para alterar sua senha: ' + token
         }, (err) => {
             if (err)
