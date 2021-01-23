@@ -192,7 +192,6 @@ router.post('/login', async (req, res) => {
         });
         
     } catch (err) {
-        console.log(err.response.body);
         return res.status(400).send({
             message: 'password recovery not completed'
         })
