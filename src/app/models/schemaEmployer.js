@@ -16,7 +16,6 @@ const EmployerSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true,
-        select: true
     },
     resetPasswordToken:{
         type: String,

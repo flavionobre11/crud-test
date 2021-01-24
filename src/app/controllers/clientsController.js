@@ -8,7 +8,10 @@ router.use(authMiddleware);
 
 router.get('/', async (req, res) =>{
     try {
-        const client = await Client.find().populate('createdBy');
+        const client = await Client.find().populate({
+            path: 'createdBy',
+            select: 'name -_id'
+        });
         res.send({ client })
         
     } catch (err) {
