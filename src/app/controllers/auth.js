@@ -202,11 +202,11 @@ router.post('/reset', async (req, res) => {
     const { token, email, password } = req.body;
 
 
-    //verifica se o email esta vazio
-    if(!email)
+    //verifica se o email esta valido
+    if(!(emailValidator(email)))
         return res.status(400).send({
-            message: 'email empty.'
-        });
+            message: 'invalid email.'
+        })
     
     // verifica se a senha esta vazio
     if(!password)
